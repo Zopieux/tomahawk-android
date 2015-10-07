@@ -59,13 +59,15 @@ public class ArtistsFragment extends TomahawkFragment {
     @Override
     public void onItemClick(View view, final Object item) {
         if (item instanceof Artist) {
-            Artist artist = (Artist) item;
+            final Artist artist = (Artist) item;
+            if (artist.getName().isEmpty())
+                return;
             mCollection.getArtistAlbums(artist).done(new DoneCallback<CollectionCursor<Album>>() {
                 @Override
                 public void onDone(CollectionCursor<Album> cursor) {
                     Bundle bundle = new Bundle();
                     bundle.putString(TomahawkFragment.ARTIST,
-                            ((Artist) item).getCacheKey());
+                            artist.getCacheKey());
                     if (cursor != null && cursor.size() > 0) {
                         bundle.putString(TomahawkFragment.COLLECTION_ID, mCollection.getId());
                     } else {

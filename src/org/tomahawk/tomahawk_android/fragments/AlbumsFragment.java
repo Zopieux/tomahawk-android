@@ -93,12 +93,14 @@ public class AlbumsFragment extends TomahawkFragment {
                 }
             }
         } else if (item instanceof Album) {
-            Album album = (Album) item;
+            final Album album = (Album) item;
+            if (album.getName().isEmpty())
+                return;
             mCollection.getAlbumTracks(album).done(new DoneCallback<Playlist>() {
                 @Override
                 public void onDone(Playlist playlist) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(TomahawkFragment.ALBUM, ((Album) item).getCacheKey());
+                    bundle.putString(TomahawkFragment.ALBUM, album.getCacheKey());
                     if (playlist != null) {
                         bundle.putString(TomahawkFragment.COLLECTION_ID, mCollection.getId());
                     } else {
